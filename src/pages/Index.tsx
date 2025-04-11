@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import ParticleBackground from "@/components/ui/particle-background";
@@ -7,47 +6,37 @@ import SentimentCard from "@/components/crypto/SentimentCard";
 import TrendingCoins from "@/components/crypto/TrendingCoins";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-
 const Index = () => {
   // Sample sentiment cards data
-  const sentimentCards = [
-    {
-      coinName: "Bitcoin",
-      coinSymbol: "BTC",
-      sentimentScore: 78,
-      prediction: "up" as const,
-    },
-    {
-      coinName: "Ethereum",
-      coinSymbol: "ETH",
-      sentimentScore: 65,
-      prediction: "up" as const,
-    },
-    {
-      coinName: "Cardano",
-      coinSymbol: "ADA",
-      sentimentScore: 48,
-      prediction: "down" as const,
-    },
-    {
-      coinName: "Solana",
-      coinSymbol: "SOL",
-      sentimentScore: 82,
-      prediction: "up" as const,
-    }
-  ];
-
-  return (
-    <div className="min-h-screen w-full">
+  const sentimentCards = [{
+    coinName: "Bitcoin",
+    coinSymbol: "BTC",
+    sentimentScore: 78,
+    prediction: "up" as const
+  }, {
+    coinName: "Ethereum",
+    coinSymbol: "ETH",
+    sentimentScore: 65,
+    prediction: "up" as const
+  }, {
+    coinName: "Cardano",
+    coinSymbol: "ADA",
+    sentimentScore: 48,
+    prediction: "down" as const
+  }, {
+    coinName: "Solana",
+    coinSymbol: "SOL",
+    sentimentScore: 82,
+    prediction: "up" as const
+  }];
+  return <div className="min-h-screen w-full">
       <ParticleBackground />
       <Navbar />
       
       {/* Hero Section */}
       <section className="pt-24 pb-16 md:pt-32 md:pb-24 px-4">
         <div className="container mx-auto text-center max-w-3xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-crypto-neon-purple via-crypto-neon-blue to-crypto-neon-green text-transparent bg-clip-text">
-            Crypto Sentiment Analysis & Prediction
-          </h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-crypto-neon-purple via-crypto-neon-blue to-crypto-neon-green text-transparent bg-clip-text">MAAL-X</h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Discover the market pulse with AI-powered sentiment analysis and smart price predictions for cryptocurrencies.
           </p>
@@ -82,16 +71,7 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {sentimentCards.map((card, index) => (
-              <SentimentCard
-                key={index}
-                coinName={card.coinName}
-                coinSymbol={card.coinSymbol}
-                sentimentScore={card.sentimentScore}
-                prediction={card.prediction}
-                className="transform transition-transform hover:-translate-y-1 hover:shadow-neon-glow"
-              />
-            ))}
+            {sentimentCards.map((card, index) => <SentimentCard key={index} coinName={card.coinName} coinSymbol={card.coinSymbol} sentimentScore={card.sentimentScore} prediction={card.prediction} className="transform transition-transform hover:-translate-y-1 hover:shadow-neon-glow" />)}
           </div>
         </div>
       </section>
@@ -200,8 +180,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
