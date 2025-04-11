@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import ParticleBackground from "@/components/ui/particle-background";
@@ -38,7 +39,7 @@ const Index = () => {
         <div className="container mx-auto text-center max-w-3xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-crypto-neon-purple via-crypto-neon-blue to-crypto-neon-green text-transparent bg-clip-text">MAAL-X</h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Discover the market pulse with AI-powered sentiment analysis and smart price predictions for cryptocurrencies.
+            MAAL-X
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/dashboard">
