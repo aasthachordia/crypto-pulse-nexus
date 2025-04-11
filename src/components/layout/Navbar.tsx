@@ -35,7 +35,7 @@ const Navbar = () => {
               <CircleDollarSign size={28} className="text-white relative z-10" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
-              maalx
+              MAAL-X
             </span>
           </Link>
 

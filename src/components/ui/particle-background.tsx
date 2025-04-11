@@ -30,23 +30,23 @@ const ParticleBackground = () => {
     resizeCanvas();
     
     // Create particles
-    const particleCount = Math.floor(window.innerWidth / 20); // Reduced particle count
+    const particleCount = Math.floor(window.innerWidth / 30); // Further reduced particle count
     const particles: Particle[] = [];
     
     const colors = [
-      'rgba(139, 92, 246, 0.3)', // purple (dimmed)
-      'rgba(14, 165, 233, 0.3)', // blue (dimmed)
-      'rgba(16, 185, 129, 0.3)', // green (dimmed)
+      'rgba(139, 92, 246, 0.2)', // purple (more dimmed)
+      'rgba(14, 165, 233, 0.2)', // blue (more dimmed)
+      'rgba(16, 185, 129, 0.2)', // green (more dimmed)
     ];
     
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5 + 0.5, // Slightly smaller particles
+        radius: Math.random() * 1.2 + 0.3, // Even smaller particles
         color: colors[Math.floor(Math.random() * colors.length)],
-        vx: (Math.random() - 0.5) * 0.12, // Slower movement
-        vy: (Math.random() - 0.5) * 0.12  // Slower movement
+        vx: (Math.random() - 0.5) * 0.08, // Even slower movement
+        vy: (Math.random() - 0.5) * 0.08  // Even slower movement
       });
     }
     
@@ -54,8 +54,8 @@ const ParticleBackground = () => {
     const animate = () => {
       requestAnimationFrame(animate);
       
-      // Clear canvas with slight fade effect for trails (darker)
-      ctx.fillStyle = 'rgba(17, 24, 39, 0.1)';
+      // Clear canvas with slight fade effect for trails (even darker)
+      ctx.fillStyle = 'rgba(10, 15, 24, 0.2)'; // Darker background fade
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       // Update and draw particles
@@ -82,10 +82,10 @@ const ParticleBackground = () => {
           const dy = particle.y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 80) { // Only connect nearby particles
+          if (distance < 70) { // Reduced connection distance
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.02 * (1 - distance / 80)})`; // Dimmer connections
-            ctx.lineWidth = 0.3; // Thinner lines
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.01 * (1 - distance / 70)})`; // Even dimmer connections
+            ctx.lineWidth = 0.2; // Thinner lines
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();

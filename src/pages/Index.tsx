@@ -185,7 +185,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
               <span className="text-xl font-bold bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
-                maalx
+                MAAL-X
               </span>
               <span className="text-sm text-muted-foreground">© 2025</span>
             </div>
