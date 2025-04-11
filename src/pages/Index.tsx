@@ -58,7 +58,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/coins">
-              <Button variant="outline" className="text-lg px-8 py-6 border-white/20 hover:bg-white/5">
+              <Button variant="outline" className="text-lg px-8 py-6 border-white/10 hover:bg-white/5">
                 Explore Now <ArrowRight className="ml-2" size={18} />
               </Button>
             </Link>
@@ -165,7 +165,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
-          <div className="glassmorphism rounded-2xl p-10 border border-white/10 shadow-neon-glow">
+          <div className="glassmorphism rounded-2xl p-10 border border-white/5 shadow-neon-glow">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
               Stay Ahead of the Market
             </h2>
@@ -180,12 +180,12 @@ const Index = () => {
       </section>
       
       {/* Footer */}
-      <footer className="border-t border-white/10 py-10 px-4">
+      <footer className="border-t border-white/5 py-10 px-4">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
               <span className="text-xl font-bold bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
-                CryptoSentinel
+                maalx
               </span>
               <span className="text-sm text-muted-foreground">© 2025</span>
             </div>

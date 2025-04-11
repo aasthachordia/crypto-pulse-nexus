@@ -30,23 +30,23 @@ const ParticleBackground = () => {
     resizeCanvas();
     
     // Create particles
-    const particleCount = Math.floor(window.innerWidth / 15); // Responsive particle count
+    const particleCount = Math.floor(window.innerWidth / 20); // Reduced particle count
     const particles: Particle[] = [];
     
     const colors = [
-      'rgba(139, 92, 246, 0.5)', // purple
-      'rgba(14, 165, 233, 0.5)', // blue
-      'rgba(16, 185, 129, 0.5)', // green
+      'rgba(139, 92, 246, 0.3)', // purple (dimmed)
+      'rgba(14, 165, 233, 0.3)', // blue (dimmed)
+      'rgba(16, 185, 129, 0.3)', // green (dimmed)
     ];
     
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 2 + 0.5,
+        radius: Math.random() * 1.5 + 0.5, // Slightly smaller particles
         color: colors[Math.floor(Math.random() * colors.length)],
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15
+        vx: (Math.random() - 0.5) * 0.12, // Slower movement
+        vy: (Math.random() - 0.5) * 0.12  // Slower movement
       });
     }
     
@@ -54,8 +54,8 @@ const ParticleBackground = () => {
     const animate = () => {
       requestAnimationFrame(animate);
       
-      // Clear canvas with slight fade effect for trails
-      ctx.fillStyle = 'rgba(17, 24, 39, 0.05)';
+      // Clear canvas with slight fade effect for trails (darker)
+      ctx.fillStyle = 'rgba(17, 24, 39, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       // Update and draw particles
@@ -82,10 +82,10 @@ const ParticleBackground = () => {
           const dy = particle.y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 100) { // Only connect nearby particles
+          if (distance < 80) { // Only connect nearby particles
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.03 * (1 - distance / 100)})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.02 * (1 - distance / 80)})`; // Dimmer connections
+            ctx.lineWidth = 0.3; // Thinner lines
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();

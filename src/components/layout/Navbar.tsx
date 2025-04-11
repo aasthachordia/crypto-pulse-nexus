@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glassmorphism border-b border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 glassmorphism border-b border-white/5">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
@@ -35,7 +35,7 @@ const Navbar = () => {
               <CircleDollarSign size={28} className="text-white relative z-10" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
-              CryptoSentinel
+              maalx
             </span>
           </Link>
 
@@ -80,7 +80,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden glassmorphism border-t border-white/10 py-4 px-4">
+        <div className="md:hidden glassmorphism border-t border-white/5 py-4 px-4">
           <div className="flex flex-col space-y-4">
             <Link 
               to="/" 
@@ -106,7 +106,7 @@ const Navbar = () => {
               <Grid size={18} />
               <span>Coins</span>
             </Link>
-            <div className="flex items-center justify-between pt-3 border-t border-white/10">
+            <div className="flex items-center justify-between pt-3 border-t border-white/5">
               <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
                 {darkMode ? (
                   <Sun size={20} className="text-foreground/80" />
