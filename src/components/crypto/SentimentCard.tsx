@@ -18,9 +18,10 @@ const SentimentCard = ({
   prediction,
   className
 }: SentimentCardProps) => {
-  const getSentimentColor = (score: number) => {
-    if (score >= 70) return "text-crypto-positive";
-    if (score <= 30) return "text-crypto-negative";
+  const getSentimentColor = (score: number, prediction: string) => {
+    // Always use prediction color for consistency
+    if (prediction === "up") return "text-crypto-positive";
+    if (prediction === "down") return "text-crypto-negative";
     return "text-crypto-neutral";
   };
   
@@ -39,6 +40,13 @@ const SentimentCard = ({
     up: "border-crypto-positive/30 bg-crypto-positive/5",
     down: "border-crypto-negative/30 bg-crypto-negative/5",
     neutral: "border-crypto-neutral/30 bg-crypto-neutral/5",
+  };
+
+  // Get the appropriate progress bar color based on prediction
+  const getProgressBarColor = (prediction: string) => {
+    if (prediction === "up") return "bg-crypto-positive";
+    if (prediction === "down") return "bg-crypto-negative";
+    return "bg-crypto-neutral";
   };
 
   return (
@@ -63,7 +71,7 @@ const SentimentCard = ({
         <div className="mt-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium">Sentiment Score</span>
-            <span className={`text-lg font-bold ${getSentimentColor(sentimentScore)}`}>
+            <span className={`text-lg font-bold ${getSentimentColor(sentimentScore, prediction)}`}>
               {sentimentScore}
             </span>
           </div>
@@ -72,9 +80,7 @@ const SentimentCard = ({
             <div 
               className={cn(
                 "h-2.5 rounded-full",
-                sentimentScore >= 70 ? "bg-crypto-positive" : 
-                sentimentScore <= 30 ? "bg-crypto-negative" : 
-                "bg-crypto-neutral"
+                getProgressBarColor(prediction)
               )} 
               style={{ width: `${sentimentScore}%` }}
             ></div>
