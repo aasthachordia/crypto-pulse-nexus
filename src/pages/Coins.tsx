@@ -1,11 +1,9 @@
-
 import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import ParticleBackground from "@/components/ui/particle-background";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ArrowDownRight, Minus, Search, LayoutGrid, List } from "lucide-react";
 
@@ -222,29 +220,6 @@ const Coins = () => {
           </div>
           
           <div className="flex gap-2">
-            <Tabs defaultValue="all" className="w-[200px]">
-              <TabsList className="glassmorphism border-white/10 bg-transparent">
-                <TabsTrigger 
-                  value="all" 
-                  className="data-[state=active]:bg-white/10 data-[state=active]:text-white"
-                >
-                  All
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="bullish"
-                  className="data-[state=active]:bg-white/10 data-[state=active]:text-white"
-                >
-                  Bullish
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="bearish"
-                  className="data-[state=active]:bg-white/10 data-[state=active]:text-white"
-                >
-                  Bearish
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-            
             <div className="flex glassmorphism border-white/10 rounded-md overflow-hidden">
               <button
                 onClick={() => setView("grid")}
