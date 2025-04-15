@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import ParticleBackground from "@/components/ui/particle-background";
@@ -24,7 +23,6 @@ import {
   Minus
 } from "lucide-react";
 
-// Sample coin data
 const initialCoins = [
   { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
   { id: "ethereum", name: "Ethereum", symbol: "ETH" },
@@ -36,7 +34,6 @@ const initialCoins = [
   { id: "binancecoin", name: "Binance Coin", symbol: "BNB" }
 ];
 
-// Sample sentiment data
 const generateSentimentData = (days: number) => {
   const data = [];
   const today = new Date();
@@ -46,7 +43,6 @@ const generateSentimentData = (days: number) => {
     const date = new Date();
     date.setDate(today.getDate() - i);
     
-    // Add some natural looking variations to sentiment
     sentiment = Math.min(95, Math.max(20, sentiment + (Math.random() * 10 - 5)));
     
     data.push({
@@ -59,7 +55,6 @@ const generateSentimentData = (days: number) => {
   return data;
 };
 
-// Sample news data
 const sampleNews = [
   {
     id: 1,
@@ -101,7 +96,6 @@ const sampleNews = [
 const Dashboard = () => {
   const [selectedCoin, setSelectedCoin] = useState(initialCoins[0]);
   const [sentimentData, setSentimentData] = useState(generateSentimentData(30));
-  const [timePeriod, setTimePeriod] = useState("30d");
   const [sentimentScore, setSentimentScore] = useState(78);
   const [prediction, setPrediction] = useState<"up" | "down" | "neutral">("up");
   const [sentimentBreakdown, setSentimentBreakdown] = useState({
@@ -110,20 +104,14 @@ const Dashboard = () => {
     negative: 13
   });
   
-  // Update data when coin or time period changes
   useEffect(() => {
-    // In a real app, this would fetch data from an API
-    const days = timePeriod === "7d" ? 7 : timePeriod === "14d" ? 14 : 30;
-    setSentimentData(generateSentimentData(days));
+    setSentimentData(generateSentimentData(30));
     
-    // Simulate sentiment score changes
     const newScore = Math.floor(Math.random() * 30 + 50);
     setSentimentScore(newScore);
     
-    // Set prediction based on sentiment trend
     setPrediction(newScore > 70 ? "up" : newScore < 40 ? "down" : "neutral");
     
-    // Simulate sentiment breakdown
     const positive = Math.floor(Math.random() * 30 + 50);
     const negative = Math.floor(Math.random() * 20);
     setSentimentBreakdown({
@@ -131,9 +119,8 @@ const Dashboard = () => {
       negative,
       neutral: 100 - positive - negative
     });
-  }, [selectedCoin, timePeriod]);
+  }, [selectedCoin]);
   
-  // Get the current sentiment color
   const getSentimentColor = (score: number) => {
     if (score >= 70) return "text-crypto-positive";
     if (score <= 30) return "text-crypto-negative";
@@ -150,7 +137,6 @@ const Dashboard = () => {
           Sentiment Dashboard
         </h1>
         
-        {/* Coin Selector */}
         <div className="mb-8">
           <Select
             value={selectedCoin.id}
@@ -172,9 +158,7 @@ const Dashboard = () => {
           </Select>
         </div>
         
-        {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Main Sentiment Score */}
           <Card className="glassmorphism border-white/10 lg:col-span-1 h-full">
             <CardHeader>
               <CardTitle className="text-xl">
@@ -288,44 +272,10 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          {/* Right Column - Charts and News */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Sentiment Chart */}
             <Card className="glassmorphism border-white/10">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-xl">Sentiment Trend</CardTitle>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setTimePeriod("7d")}
-                    className={`px-3 py-1 text-sm rounded-md ${
-                      timePeriod === "7d" 
-                        ? "bg-crypto-neon-purple text-white" 
-                        : "bg-white/10 hover:bg-white/20"
-                    }`}
-                  >
-                    7D
-                  </button>
-                  <button
-                    onClick={() => setTimePeriod("14d")}
-                    className={`px-3 py-1 text-sm rounded-md ${
-                      timePeriod === "14d" 
-                        ? "bg-crypto-neon-purple text-white" 
-                        : "bg-white/10 hover:bg-white/20"
-                    }`}
-                  >
-                    14D
-                  </button>
-                  <button
-                    onClick={() => setTimePeriod("30d")}
-                    className={`px-3 py-1 text-sm rounded-md ${
-                      timePeriod === "30d" 
-                        ? "bg-crypto-neon-purple text-white" 
-                        : "bg-white/10 hover:bg-white/20"
-                    }`}
-                  >
-                    30D
-                  </button>
-                </div>
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="sentiment">
@@ -438,7 +388,6 @@ const Dashboard = () => {
               </CardContent>
             </Card>
             
-            {/* News Feed */}
             <Card className="glassmorphism border-white/10">
               <CardHeader>
                 <CardTitle className="text-xl flex items-center">
