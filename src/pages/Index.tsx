@@ -1,35 +1,46 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import ParticleBackground from "@/components/ui/particle-background";
 import CryptoTicker from "@/components/crypto/CryptoTicker";
 import SentimentCard from "@/components/crypto/SentimentCard";
 import TrendingCoins from "@/components/crypto/TrendingCoins";
+import SentimentGraph from "@/components/crypto/SentimentGraph";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRight } from "lucide-react";
+
 const Index = () => {
-  // Sample sentiment cards data
+  const [selectedCoin, setSelectedCoin] = useState("BTC");
+  
+  // Sample sentiment cards data with prices
   const sentimentCards = [{
     coinName: "Bitcoin",
     coinSymbol: "BTC",
     sentimentScore: 78,
+    price: 62354.23,
     prediction: "up" as const
   }, {
     coinName: "Ethereum",
     coinSymbol: "ETH",
     sentimentScore: 65,
+    price: 3456.78,
     prediction: "up" as const
   }, {
     coinName: "Cardano",
     coinSymbol: "ADA",
     sentimentScore: 48,
+    price: 0.543,
     prediction: "down" as const
   }, {
     coinName: "Solana",
     coinSymbol: "SOL",
     sentimentScore: 82,
+    price: 142.58,
     prediction: "up" as const
   }];
-  return <div className="min-h-screen w-full">
+
+  return (
+    <div className="min-h-screen w-full">
       <ParticleBackground />
       <Navbar />
       
@@ -60,16 +71,46 @@ const Index = () => {
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="mb-10">
-            <h2 className="text-3xl font-bold mb-3 text-center bg-gradient-to-r from-white to-white/70 text-transparent bg-clip-text">
-              Live Sentiment Analysis
-            </h2>
-            <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-              Our AI analyzes thousands of social media posts and news articles to gauge market sentiment.
-            </p>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-white to-white/70 text-transparent bg-clip-text">
+                  Live Sentiment Analysis
+                </h2>
+                <p className="text-muted-foreground">
+                  Our AI analyzes thousands of social media posts and news articles to gauge market sentiment.
+                </p>
+              </div>
+              <Select value={selectedCoin} onValueChange={setSelectedCoin}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select coin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
+                  <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
+                  <SelectItem value="SOL">Solana (SOL)</SelectItem>
+                  <SelectItem value="ADA">Cardano (ADA)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Sentiment Graph */}
+            <div className="mb-8">
+              <SentimentGraph coinSymbol={selectedCoin} />
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {sentimentCards.map((card, index) => <SentimentCard key={index} coinName={card.coinName} coinSymbol={card.coinSymbol} sentimentScore={card.sentimentScore} prediction={card.prediction} className="transform transition-transform hover:-translate-y-1 hover:shadow-neon-glow" />)}
+            {sentimentCards.map((card, index) => (
+              <SentimentCard 
+                key={index}
+                coinName={card.coinName}
+                coinSymbol={card.coinSymbol}
+                sentimentScore={card.sentimentScore}
+                price={card.price}
+                prediction={card.prediction}
+                className="transition-transform hover:-translate-y-1"
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -178,6 +219,8 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;

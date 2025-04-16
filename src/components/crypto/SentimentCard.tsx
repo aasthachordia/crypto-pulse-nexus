@@ -7,6 +7,7 @@ interface SentimentCardProps {
   coinName: string;
   coinSymbol: string;
   sentimentScore: number;
+  price: number;
   prediction: "up" | "down" | "neutral";
   className?: string;
 }
@@ -15,6 +16,7 @@ const SentimentCard = ({
   coinName,
   coinSymbol,
   sentimentScore,
+  price,
   prediction,
   className
 }: SentimentCardProps) => {
@@ -60,11 +62,14 @@ const SentimentCard = ({
             <h3 className="text-lg font-semibold">{coinName}</h3>
             <p className="text-sm text-muted-foreground">{coinSymbol}</p>
           </div>
-          <div className="flex items-center space-x-1">
-            {getPredictionIcon(prediction)}
-            <span className="text-sm">
-              {prediction === "up" ? "Bullish" : prediction === "down" ? "Bearish" : "Neutral"}
-            </span>
+          <div className="flex flex-col items-end">
+            <span className="text-lg font-semibold">${price.toLocaleString()}</span>
+            <div className="flex items-center space-x-1">
+              {getPredictionIcon(prediction)}
+              <span className="text-sm">
+                {prediction === "up" ? "Bullish" : prediction === "down" ? "Bearish" : "Neutral"}
+              </span>
+            </div>
           </div>
         </div>
         
