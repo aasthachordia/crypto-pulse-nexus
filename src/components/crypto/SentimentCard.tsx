@@ -1,5 +1,5 @@
 
-import { ArrowUp, ArrowDown, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -8,8 +8,6 @@ interface SentimentCardProps {
   coinSymbol: string;
   sentimentScore: number;
   prediction: "up" | "down" | "neutral";
-  price: number;
-  change24h: number;
   className?: string;
 }
 
@@ -18,8 +16,6 @@ const SentimentCard = ({
   coinSymbol,
   sentimentScore,
   prediction,
-  price,
-  change24h,
   className
 }: SentimentCardProps) => {
   const getSentimentColor = (score: number, prediction: string) => {
@@ -59,7 +55,7 @@ const SentimentCard = ({
       className
     )}>
       <CardContent className="p-6">
-        <div className="flex justify-between items-start mb-4">
+        <div className="flex justify-between items-start">
           <div>
             <h3 className="text-lg font-semibold">{coinName}</h3>
             <p className="text-sm text-muted-foreground">{coinSymbol}</p>
@@ -68,23 +64,6 @@ const SentimentCard = ({
             {getPredictionIcon(prediction)}
             <span className="text-sm">
               {prediction === "up" ? "Bullish" : prediction === "down" ? "Bearish" : "Neutral"}
-            </span>
-          </div>
-        </div>
-        
-        <div className="mb-4 p-3 bg-black/20 rounded-lg">
-          <div className="flex justify-between items-center mb-1">
-            <span className="text-sm">Current Price</span>
-            <span className="text-lg font-bold">${price.toLocaleString()}</span>
-          </div>
-          <div className="flex items-center">
-            <span className={`text-sm ${change24h >= 0 ? 'text-crypto-positive' : 'text-crypto-negative'}`}>
-              {change24h >= 0 ? (
-                <TrendingUp size={16} className="inline mr-1" />
-              ) : (
-                <TrendingDown size={16} className="inline mr-1" />
-              )}
-              {change24h >= 0 ? '+' : ''}{change24h}%
             </span>
           </div>
         </div>
