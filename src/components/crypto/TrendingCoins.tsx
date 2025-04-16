@@ -1,9 +1,7 @@
 
 import { useEffect, useState } from "react";
-import { ChevronRight, ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Mock data for trending coins
 const initialTrendingCoins = [
@@ -63,16 +61,9 @@ const TrendingCoins = () => {
   }, []);
 
   return (
-    <Card className="glassmorphism border-white/10">
+    <Card className="glassmorphism border-white/10 h-full">
       <CardHeader>
-        <CardTitle className="text-xl flex items-center justify-between">
-          <span>Trending Coins</span>
-          <Link to="/coins">
-            <Button variant="ghost" size="sm" className="text-xs flex items-center gap-1">
-              View all <ChevronRight size={14} />
-            </Button>
-          </Link>
-        </CardTitle>
+        <CardTitle className="text-xl">Trending Coins</CardTitle>
       </CardHeader>
       
       <CardContent className="px-6">
@@ -123,14 +114,6 @@ const TrendingCoins = () => {
           ))}
         </div>
       </CardContent>
-      
-      <CardFooter className="px-6 py-4 bg-black/20 border-t border-white/5">
-        <Link to="/dashboard" className="w-full">
-          <Button className="w-full bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue hover:opacity-90 transition-opacity">
-            View Dashboard
-          </Button>
-        </Link>
-      </CardFooter>
     </Card>
   );
 };

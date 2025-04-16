@@ -1,183 +1,302 @@
-import { Link } from "react-router-dom";
+
+import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import ParticleBackground from "@/components/ui/particle-background";
-import CryptoTicker from "@/components/crypto/CryptoTicker";
-import SentimentCard from "@/components/crypto/SentimentCard";
 import TrendingCoins from "@/components/crypto/TrendingCoins";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import SentimentCard from "@/components/crypto/SentimentCard";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+// Initial coin data
+const initialCoins = [
+  { id: "bitcoin", name: "Bitcoin", symbol: "BTC", price: 62354.23, change24h: 2.34 },
+  { id: "ethereum", name: "Ethereum", symbol: "ETH", price: 3456.78, change24h: -1.2 },
+  { id: "solana", name: "Solana", symbol: "SOL", price: 142.58, change24h: 5.67 },
+  { id: "cardano", name: "Cardano", symbol: "ADA", price: 0.543, change24h: -0.87 },
+  { id: "xrp", name: "XRP", symbol: "XRP", price: 0.621, change24h: 1.07 },
+  { id: "polkadot", name: "Polkadot", symbol: "DOT", price: 7.85, change24h: -2.13 },
+  { id: "avalanche", name: "Avalanche", symbol: "AVAX", price: 35.27, change24h: 3.25 },
+  { id: "binancecoin", name: "Binance Coin", symbol: "BNB", price: 562.34, change24h: 0.76 }
+];
+
+const generateSentimentData = (days: number) => {
+  const data = [];
+  const today = new Date();
+  let sentiment = Math.random() * 30 + 40; // Start between 40-70
+  
+  for (let i = days; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(today.getDate() - i);
+    
+    sentiment = Math.min(95, Math.max(20, sentiment + (Math.random() * 10 - 5)));
+    
+    data.push({
+      date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      sentiment: Math.round(sentiment),
+      price: Math.round(Math.random() * 5000 + 45000) / 100, // Simulate price between 450-500
+    });
+  }
+  
+  return data;
+};
+
 const Index = () => {
-  // Sample sentiment cards data
-  const sentimentCards = [{
-    coinName: "Bitcoin",
-    coinSymbol: "BTC",
-    sentimentScore: 78,
-    prediction: "up" as const
-  }, {
-    coinName: "Ethereum",
-    coinSymbol: "ETH",
-    sentimentScore: 65,
-    prediction: "up" as const
-  }, {
-    coinName: "Cardano",
-    coinSymbol: "ADA",
-    sentimentScore: 48,
-    prediction: "down" as const
-  }, {
-    coinName: "Solana",
-    coinSymbol: "SOL",
-    sentimentScore: 82,
-    prediction: "up" as const
-  }];
-  return <div className="min-h-screen w-full">
+  const [selectedCoin, setSelectedCoin] = useState(initialCoins[0]);
+  const [sentimentData, setSentimentData] = useState(generateSentimentData(30));
+  const [sentimentScore, setSentimentScore] = useState(78);
+  const [prediction, setPrediction] = useState<"up" | "down" | "neutral">("up");
+  const [sentimentBreakdown, setSentimentBreakdown] = useState({
+    positive: 65,
+    neutral: 22,
+    negative: 13
+  });
+
+  useEffect(() => {
+    // Simulate loading new data when coin changes
+    setSentimentData(generateSentimentData(30));
+    
+    const newScore = Math.floor(Math.random() * 30 + 50);
+    setSentimentScore(newScore);
+    
+    setPrediction(newScore > 70 ? "up" : newScore < 40 ? "down" : "neutral");
+    
+    const positive = Math.floor(Math.random() * 30 + 50);
+    const negative = Math.floor(Math.random() * 20);
+    setSentimentBreakdown({
+      positive,
+      negative,
+      neutral: 100 - positive - negative
+    });
+  }, [selectedCoin]);
+
+  return (
+    <div className="min-h-screen">
       <ParticleBackground />
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 md:pt-32 md:pb-24 px-4">
-        <div className="container mx-auto text-center max-w-3xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-crypto-neon-purple via-crypto-neon-blue to-crypto-neon-green text-transparent bg-clip-text">MAAL-X</h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">Sentiments Analysis Price prediction Model</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/dashboard">
-              <Button className="text-lg px-8 py-6 bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue hover:opacity-90 transition-opacity">
-                View Dashboard
-              </Button>
-            </Link>
-            <Link to="/coins">
-              <Button variant="outline" className="text-lg px-8 py-6 border-white/10 hover:bg-white/5">
-                Explore Now <ArrowRight className="ml-2" size={18} />
-              </Button>
-            </Link>
-          </div>
+      <div className="container mx-auto pt-24 pb-16 px-4">
+        <div className="mb-8">
+          <Select
+            value={selectedCoin.id}
+            onValueChange={(value) => {
+              const coin = initialCoins.find(c => c.id === value);
+              if (coin) setSelectedCoin(coin);
+            }}
+          >
+            <SelectTrigger className="w-full md:w-[250px] glassmorphism border-white/10">
+              <SelectValue placeholder="Select a coin" />
+            </SelectTrigger>
+            <SelectContent className="glassmorphism border-white/10 z-50 text-white">
+              {initialCoins.map(coin => (
+                <SelectItem key={coin.id} value={coin.id}>
+                  {coin.name} ({coin.symbol})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-      </section>
-      
-      {/* Ticker */}
-      <CryptoTicker />
-      
-      {/* Sentiment Cards Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold mb-3 text-center bg-gradient-to-r from-white to-white/70 text-transparent bg-clip-text">
-              Live Sentiment Analysis
-            </h2>
-            <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-              Our AI analyzes thousands of social media posts and news articles to gauge market sentiment.
-            </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <SentimentCard 
+            coinName={selectedCoin.name}
+            coinSymbol={selectedCoin.symbol}
+            sentimentScore={sentimentScore}
+            prediction={prediction}
+            price={selectedCoin.price}
+            change24h={selectedCoin.change24h}
+          />
+          
+          <Card className="md:col-span-2 glassmorphism border-white/10">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-xl">Sentiment Trend</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="sentiment" className="w-full">
+                <TabsList className="mb-4 bg-white/10 w-full">
+                  <TabsTrigger 
+                    value="sentiment" 
+                    className="data-[state=active]:bg-crypto-neon-purple/40 data-[state=active]:shadow-none"
+                  >
+                    Sentiment
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="correlation" 
+                    className="data-[state=active]:bg-crypto-neon-purple/40 data-[state=active]:shadow-none"
+                  >
+                    Price Correlation
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="sentiment" className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={sentimentData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                      <XAxis 
+                        dataKey="date" 
+                        stroke="rgba(255,255,255,0.5)"
+                        tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+                      />
+                      <YAxis 
+                        domain={[0, 100]} 
+                        stroke="rgba(255,255,255,0.5)"
+                        tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          background: 'rgba(17, 24, 39, 0.8)', 
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          borderRadius: '8px',
+                          color: 'white'
+                        }} 
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="sentiment" 
+                        stroke="rgba(139, 92, 246, 1)" 
+                        strokeWidth={3}
+                        dot={{ fill: 'rgba(139, 92, 246, 1)', r: 4 }}
+                        activeDot={{ r: 6, fill: 'rgba(139, 92, 246, 1)', stroke: 'white', strokeWidth: 2 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </TabsContent>
+                
+                <TabsContent value="correlation" className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={sentimentData}>
+                      <defs>
+                        <linearGradient id="sentimentGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="rgba(139, 92, 246, 0.8)" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="rgba(139, 92, 246, 0.1)" stopOpacity={0.1}/>
+                        </linearGradient>
+                        <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="rgba(14, 165, 233, 0.8)" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="rgba(14, 165, 233, 0.1)" stopOpacity={0.1}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                      <XAxis 
+                        dataKey="date" 
+                        stroke="rgba(255,255,255,0.5)"
+                        tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+                      />
+                      <YAxis 
+                        yAxisId="left"
+                        orientation="left"
+                        domain={[0, 100]} 
+                        stroke="rgba(139, 92, 246, 0.7)"
+                        tick={{ fill: 'rgba(139, 92, 246, 0.7)', fontSize: 12 }}
+                      />
+                      <YAxis 
+                        yAxisId="right"
+                        orientation="right"
+                        domain={['auto', 'auto']} 
+                        stroke="rgba(14, 165, 233, 0.7)"
+                        tick={{ fill: 'rgba(14, 165, 233, 0.7)', fontSize: 12 }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          background: 'rgba(17, 24, 39, 0.8)', 
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          borderRadius: '8px',
+                          color: 'white'
+                        }} 
+                      />
+                      <Area 
+                        type="monotone" 
+                        dataKey="sentiment" 
+                        stroke="rgba(139, 92, 246, 1)" 
+                        fillOpacity={1}
+                        fill="url(#sentimentGradient)"
+                        yAxisId="left"
+                        strokeWidth={2}
+                      />
+                      <Area 
+                        type="monotone" 
+                        dataKey="price" 
+                        stroke="rgba(14, 165, 233, 1)" 
+                        fillOpacity={1}
+                        fill="url(#priceGradient)"
+                        yAxisId="right"
+                        strokeWidth={2}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2">
+            <Card className="glassmorphism border-white/10 h-full">
+              <CardHeader>
+                <CardTitle className="text-xl">Market Sentiment Analysis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-6 text-sm text-muted-foreground">
+                  Our AI-powered sentiment analysis tracks social media mentions, news articles, and market indicators
+                  to gauge market sentiment for {selectedCoin.name}.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <div className="text-sm text-muted-foreground mb-1">Positive Sentiment</div>
+                    <div className="text-2xl font-bold text-crypto-positive">{sentimentBreakdown.positive}%</div>
+                    <div className="w-full h-2 bg-white/10 rounded-full mt-2">
+                      <div 
+                        className="bg-crypto-positive h-2 rounded-full" 
+                        style={{ width: `${sentimentBreakdown.positive}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <div className="text-sm text-muted-foreground mb-1">Neutral Sentiment</div>
+                    <div className="text-2xl font-bold text-crypto-neutral">{sentimentBreakdown.neutral}%</div>
+                    <div className="w-full h-2 bg-white/10 rounded-full mt-2">
+                      <div 
+                        className="bg-crypto-neutral h-2 rounded-full" 
+                        style={{ width: `${sentimentBreakdown.neutral}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <div className="text-sm text-muted-foreground mb-1">Negative Sentiment</div>
+                    <div className="text-2xl font-bold text-crypto-negative">{sentimentBreakdown.negative}%</div>
+                    <div className="w-full h-2 bg-white/10 rounded-full mt-2">
+                      <div 
+                        className="bg-crypto-negative h-2 rounded-full" 
+                        style={{ width: `${sentimentBreakdown.negative}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-sm text-muted-foreground">
+                  Updated: {new Date().toLocaleString()}
+                </div>
+              </CardContent>
+            </Card>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {sentimentCards.map((card, index) => <SentimentCard key={index} coinName={card.coinName} coinSymbol={card.coinSymbol} sentimentScore={card.sentimentScore} prediction={card.prediction} className="transform transition-transform hover:-translate-y-1 hover:shadow-neon-glow" />)}
+          <div>
+            <TrendingCoins />
           </div>
         </div>
-      </section>
-      
-      {/* Features Section */}
-      <section className="py-16 px-4 bg-gradient-radial from-crypto-dark-blue/30 to-transparent">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div>
-              <TrendingCoins />
-            </div>
-            
-            <div>
-              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-white to-white/70 text-transparent bg-clip-text">
-                Make Informed Decisions
-              </h2>
-              <div className="space-y-6">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-crypto-neon-purple/20 flex items-center justify-center flex-shrink-0">
-                    <div className="w-6 h-6 rounded-full bg-crypto-neon-purple flex items-center justify-center text-white">
-                      1
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium mb-1">Real-time Sentiment Analysis</h3>
-                    <p className="text-muted-foreground">
-                      Our AI constantly monitors social media, news, and forums to analyze market sentiment.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-crypto-neon-blue/20 flex items-center justify-center flex-shrink-0">
-                    <div className="w-6 h-6 rounded-full bg-crypto-neon-blue flex items-center justify-center text-white">
-                      2
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium mb-1">Price Predictions</h3>
-                    <p className="text-muted-foreground">
-                      Get 24-hour and 7-day price forecasts based on historical data and sentiment trends.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-crypto-neon-green/20 flex items-center justify-center flex-shrink-0">
-                    <div className="w-6 h-6 rounded-full bg-crypto-neon-green flex items-center justify-center text-white">
-                      3
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium mb-1">Advanced Visualizations</h3>
-                    <p className="text-muted-foreground">
-                      Interactive charts and dashboards to visualize sentiment trends and market movements.
-                    </p>
-                  </div>
-                </div>
-                
-                <Link to="/dashboard" className="inline-block mt-6">
-                  <Button className="px-8 py-6 bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue hover:opacity-90 transition-opacity">
-                    Explore Dashboard
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center max-w-4xl">
-          <div className="glassmorphism rounded-2xl p-10 border border-white/5 shadow-neon-glow">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
-              Stay Ahead of the Market
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Get personalized alerts, in-depth analysis, and access to our predictive AI models.
-            </p>
-            <Button className="px-8 py-6 text-lg bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue hover:opacity-90 transition-opacity">
-              Get Started Now
-            </Button>
-          </div>
-        </div>
-      </section>
-      
-      {/* Footer */}
-      <footer className="border-t border-white/5 py-10 px-4">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <span className="text-xl font-bold bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue text-transparent bg-clip-text">
-                MAAL-X
-              </span>
-              <span className="text-sm text-muted-foreground">© 2025</span>
-            </div>
-            
-            <div className="flex space-x-6">
-              <Link to="/" className="text-muted-foreground hover:text-foreground transition">Home</Link>
-              <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition">Dashboard</Link>
-              <Link to="/coins" className="text-muted-foreground hover:text-foreground transition">Coins</Link>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition">About</a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition">Contact</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>;
+      </div>
+    </div>
+  );
 };
+
 export default Index;
