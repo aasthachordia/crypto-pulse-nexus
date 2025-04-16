@@ -4,9 +4,7 @@ import { Link } from "react-router-dom";
 import { 
   Menu, 
   X, 
-  LineChart, 
   CircleDollarSign,
-  Grid,
   Bitcoin,
   Sun,
   Moon
@@ -45,14 +43,6 @@ const Navbar = () => {
               <Bitcoin size={18} />
               <span>Home</span>
             </Link>
-            <Link to="/dashboard" className="text-foreground/80 hover:text-foreground transition duration-200 flex items-center gap-1.5">
-              <LineChart size={18} />
-              <span>Dashboard</span>
-            </Link>
-            <Link to="/coins" className="text-foreground/80 hover:text-foreground transition duration-200 flex items-center gap-1.5">
-              <Grid size={18} />
-              <span>Coins</span>
-            </Link>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
@@ -89,22 +79,6 @@ const Navbar = () => {
             >
               <Bitcoin size={18} />
               <span>Home</span>
-            </Link>
-            <Link 
-              to="/dashboard" 
-              className="text-foreground/80 hover:text-foreground transition duration-200 flex items-center gap-1.5"
-              onClick={() => setIsOpen(false)}
-            >
-              <LineChart size={18} />
-              <span>Dashboard</span>
-            </Link>
-            <Link 
-              to="/coins" 
-              className="text-foreground/80 hover:text-foreground transition duration-200 flex items-center gap-1.5"
-              onClick={() => setIsOpen(false)}
-            >
-              <Grid size={18} />
-              <span>Coins</span>
             </Link>
             <div className="flex items-center justify-between pt-3 border-t border-white/5">
               <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
