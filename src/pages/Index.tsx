@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
@@ -102,13 +101,8 @@ const Index = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-crypto-neon-purple via-crypto-neon-blue to-crypto-neon-green text-transparent bg-clip-text">MAAL-X</h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">Sentiments Analysis Price prediction Model</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#dashboard">
-              <Button className="text-lg px-8 py-6 bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue hover:opacity-90 transition-opacity">
-                View Dashboard
-              </Button>
-            </a>
             <a href="#sentiment-cards">
-              <Button variant="outline" className="text-lg px-8 py-6 border-white/10 hover:bg-white/5">
+              <Button className="text-lg px-8 py-6 bg-gradient-to-r from-crypto-neon-purple to-crypto-neon-blue hover:opacity-90 transition-opacity">
                 Explore Now <ArrowRight className="ml-2" size={18} />
               </Button>
             </a>
